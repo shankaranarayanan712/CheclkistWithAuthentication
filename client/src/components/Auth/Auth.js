@@ -34,6 +34,7 @@ const SignUp = () => {
 
     if (isSignup) {
       dispatch(signup(form, history));
+      history.push('/posts');
     } else {
       dispatch(signin(form, history));
     }

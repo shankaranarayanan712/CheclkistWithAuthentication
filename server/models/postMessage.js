@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
 
 const postSchema = mongoose.Schema({
-    title: String,
-    message: String,
-    name: String,
+    todos: [{id: Number, text: String, isComplete: Boolean}],
     creator: String,
-    tags: [String],
-    selectedFile: String,
-    likes: { type: [String], default: [] },
+    isCompleted: Boolean,
     createdAt: {
         type: Date,
         default: new Date(),

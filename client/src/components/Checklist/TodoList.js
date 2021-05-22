@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect,useReducer } from 'react';
 import TodoForm from './TodoForm';
+import { createPost,getPosts,updatePost }  from '../../actions/posts';
 import Todo from './Todo';
 import { Button } from '@material-ui/core';
-
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
 function TodoList() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [todos, setTodos] = useState([]);
-
+  const [todoId, setTodoId] = useState("");
+  const [value, disp] = useReducer('posts');
+  useEffect( ()=>{
+    async function fetchData() {
+      const result = await dispatch(getPosts());
+      if(result && result.length >0){
+      setTodos(result[0].todos);
+      setTodoId(result[0]._id)
+      }
+    }
+    fetchData();
+  
+  },[])
+  const user = JSON.parse(localStorage.getItem('profile'))
   const addTodo = todo => {
     if (!todo.text || /^\s*$/.test(todo.text)) {
       return;
     }
-
     const newTodos = [todo, ...todos];
-
     setTodos(newTodos);
     console.log(...todos);
   };
@@ -86,6 +102,25 @@ const onDragEnd = (result)=> {
 const getListStyle = isDraggingOver => ({
   //background: isDraggingOver ? 'lightblue' : 'lightgrey',
 });
+
+
+const showAlert = ()=>{
+  return(
+    <Alert severity="success" color="info">
+         Data Saved SUccessfully, please login to check
+    </Alert>
+  )
+}
+const saveChecklist = ()=> {
+  const request ={ todos, userId :user.result._id  } ;
+  if(todoId){
+    dispatch(updatePost(todoId,request));
+  } else{
+   dispatch(createPost(request));
+  }
+  history.push('/success');
+  
+}
   return (
     <>
      
@@ -100,7 +135,7 @@ const getListStyle = isDraggingOver => ({
         getListStyle={getListStyle}
       />
       {todos && todos.length >0 &&
-       <Button type="submit" fullWidth variant="contained" color="primary" >
+       <Button fullWidth variant="contained" color="primary"  onClick={()=> saveChecklist()}>
             { 'Save Changes' }
         </Button>
       }
