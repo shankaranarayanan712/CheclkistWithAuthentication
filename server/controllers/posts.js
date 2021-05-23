@@ -7,6 +7,7 @@ const router = express.Router();
 
 export const getPosts = async (req, res) => {
     const { page } = req.query;
+    const {userid}= req.headers;
     
     try {
         // const LIMIT = 8;
@@ -16,7 +17,7 @@ export const getPosts = async (req, res) => {
         // const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
         //res.json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)});
 
-        const posts = await PostMessage.find().sort({ _id: -1 })
+        const posts = await PostMessage.find({creator:userid}).sort({ _id: -1 })
         res.json({ data: posts});
         
     } catch (error) {    

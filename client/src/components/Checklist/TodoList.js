@@ -104,13 +104,7 @@ const getListStyle = isDraggingOver => ({
 });
 
 
-const showAlert = ()=>{
-  return(
-    <Alert severity="success" color="info">
-         Data Saved SUccessfully, please login to check
-    </Alert>
-  )
-}
+
 const saveChecklist = ()=> {
   const request ={ todos, userId :user.result._id  } ;
   if(todoId){
