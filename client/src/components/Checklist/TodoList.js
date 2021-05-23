@@ -1,17 +1,18 @@
-import React, { useState, useEffect,useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoForm from './TodoForm';
 import { createPost,getPosts,updatePost }  from '../../actions/posts';
 import Todo from './Todo';
 import { Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Alert from '@material-ui/lab/Alert';
+
+
 function TodoList() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [todos, setTodos] = useState([]);
   const [todoId, setTodoId] = useState("");
-  const [value, disp] = useReducer('posts');
+ 
   useEffect( ()=>{
     async function fetchData() {
       const result = await dispatch(getPosts());
